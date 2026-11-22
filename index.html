@@ -1,0 +1,1517 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShieldAI | Credit Card Fraud Detection Build By M.Adeeb Ali SoftweR Developer</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #f4f6fc;
+    --surface: #ffffff;
+    --text: #192139;
+    --muted: #8790a5;
+    --primary: #6858e8;
+    --border: #e9ebf3;
+    --green: #16a477;
+    --red: #e34e68;
+    --orange: #dc962f;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'DM Sans', sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+button, input, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    background: #171a2d;
+    color: white;
+    padding: 28px 18px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 10;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 55px;
+    padding: 0 8px;
+}
+
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#887bff,#5141cf);
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.brand h2 {
+    font-size: 19px;
+}
+
+.brand small {
+    color: #9da3bc;
+    font-size: 10px;
+}
+
+.menu-label {
+    font-size: 10px;
+    color: #858ba5;
+    letter-spacing: 1.5px;
+    margin: 0 10px 15px;
+}
+
+.nav {
+    display: grid;
+    gap: 8px;
+}
+
+.nav button {
+    border: none;
+    background: transparent;
+    color: #aeb3c7;
+    padding: 14px 13px;
+    text-align: left;
+    border-radius: 10px;
+    font-size: 13px;
+    transition: .2s;
+}
+
+.nav button:hover,
+.nav button.active {
+    background: #302e50;
+    color: white;
+}
+
+.nav button.active {
+    border-left: 3px solid #8d81ff;
+}
+
+.sidebar-bottom {
+    margin-top: auto;
+    padding: 14px;
+    border-radius: 12px;
+    background: #24273d;
+}
+
+.sidebar-bottom strong {
+    font-size: 12px;
+}
+
+.sidebar-bottom p {
+    color: #a2a8bc;
+    font-size: 10px;
+    margin-top: 5px;
+}
+
+.main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+}
+
+.topbar {
+    height: 82px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar h3 {
+    font-size: 15px;
+}
+
+.topbar p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 4px;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: #eeeaff;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.profile strong {
+    font-size: 12px;
+    display: block;
+}
+
+.profile small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.content {
+    max-width: 1500px;
+    margin: auto;
+    padding: 35px 40px;
+    min-height: calc(100vh - 130px);
+}
+
+.page {
+    display: none;
+    animation: appear .3s ease;
+}
+
+.page.active {
+    display: block;
+}
+
+@keyframes appear {
+    from {opacity: 0; transform: translateY(8px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+.welcome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.eyebrow {
+    color: var(--primary);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+}
+
+.welcome h1 {
+    font-size: 29px;
+    margin: 8px 0;
+}
+
+.welcome p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.primary-btn,
+.secondary-btn,
+.danger-btn {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.primary-btn {
+    background: var(--primary);
+    color: white;
+}
+
+.primary-btn:hover {
+    background: #5142cb;
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background: #f0f1f6;
+    color: #555e72;
+}
+
+.danger-btn {
+    background: #fff0f2;
+    color: var(--red);
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 17px;
+    margin-bottom: 23px;
+}
+
+.stat-card,
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 21px;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-top span {
+    font-size: 12px;
+    color: #747d91;
+    font-weight: 600;
+}
+
+.stat-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 17px;
+}
+
+.purple {background:#f0edff;color:#7564e7;}
+.green {background:#e8f8f1;color:var(--green);}
+.orange {background:#fff5e8;color:var(--orange);}
+.red {background:#fff0f2;color:var(--red);}
+
+.stat-card h2 {
+    font-size: 28px;
+    margin: 17px 0 5px;
+}
+
+.stat-card small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.card {
+    margin-bottom: 22px;
+}
+
+.card-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.card-heading h2 {
+    font-size: 15px;
+}
+
+.card-heading p {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+.text-btn {
+    color: var(--primary);
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th {
+    text-align: left;
+    color: #9299aa;
+    background: #fafbfe;
+    font-size: 10px;
+    padding: 13px;
+    white-space: nowrap;
+}
+
+td {
+    padding: 15px 13px;
+    border-bottom: 1px solid #f0f1f5;
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 30px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.status.low-risk {
+    background: #e9f8f1;
+    color: #159d71;
+}
+
+.status.under-review {
+    background: #fff5e6;
+    color: #d28a1c;
+}
+
+.status.high-risk {
+    background: #fff0f1;
+    color: #e34f65;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 30px;
+}
+
+.banner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f2efff;
+    border: 1px solid #e4dfff;
+    border-radius: 13px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.banner-icon {
+    width: 40px;
+    height: 40px;
+    background: #e5dfff;
+    color: var(--primary);
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.banner h3 {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.banner p {
+    color: #777f94;
+    font-size: 10px;
+    line-height: 1.6;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.form-group label {
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group select {
+    padding: 13px;
+    border: 1px solid #e6e8ef;
+    border-radius: 8px;
+    outline: none;
+    background: white;
+    font-size: 12px;
+    width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px #6558e817;
+}
+
+.form-group small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.result {
+    display: none;
+    border: 1px solid #ded9ff;
+}
+
+.result.show {
+    display: block;
+    animation: appear .3s ease;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.result-header h2 {
+    font-size: 18px;
+    margin-top: 7px;
+}
+
+.result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.result-grid span {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+.result-grid h3 {
+    font-size: 23px;
+    margin-top: 8px;
+}
+
+.progress-track {
+    height: 9px;
+    background: #eff0f5;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg,#7667ee,#e35a79);
+    transition: width .7s ease;
+}
+
+.result-note {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 12px;
+}
+
+.search-input {
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 11px;
+}
+
+.model-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.model-box {
+    padding: 25px;
+    background: #fafaff;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.model-box h3 {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.model-box p {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+}
+
+.model-box strong {
+    font-size: 27px;
+    color: var(--primary);
+}
+
+.alert {
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    font-size: 12px;
+    display: none;
+}
+
+.alert.show {
+    display: block;
+}
+
+.alert.error {
+    background: #fff0f1;
+    color: var(--red);
+}
+
+footer {
+    text-align: center;
+    color: #a1a6b5;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 10px;
+}
+
+@media(max-width:1100px) {
+    .stats {grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:700px) {
+    .sidebar {
+        width: 100%;
+        position: static;
+        padding: 15px;
+    }
+
+    .brand {
+        margin-bottom: 18px;
+    }
+
+    .menu-label,
+    .sidebar-bottom {
+        display: none;
+    }
+
+    .nav {
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .nav button {
+        white-space: nowrap;
+        font-size: 11px;
+        padding: 11px;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .layout {
+        flex-direction: column;
+    }
+
+    .topbar {
+        height: 68px;
+        padding: 0 16px;
+    }
+
+    .profile > div:last-child {
+        display: none;
+    }
+
+    .content {
+        padding: 24px 15px;
+    }
+
+    .welcome {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .welcome h1 {
+        font-size: 24px;
+    }
+
+    .stats {
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-card h2 {
+        font-size: 23px;
+    }
+
+    .stat-top span {
+        font-size: 10px;
+    }
+
+    .card {
+        padding: 17px;
+    }
+
+    .form-grid,
+    .result-grid,
+    .model-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+
+    .banner {
+        align-items: flex-start;
+    }
+}
+
+@media(max-width:380px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+<aside class="sidebar">
+
+    <div class="brand">
+        <div class="brand-icon">S</div>
+        <div>
+            <h2>ShieldAI</h2>
+            <small>Fraud Detection</small>
+        </div>
+    </div>
+
+    <p class="menu-label">MAIN MENU</p>
+
+    <nav class="nav">
+        <button class="active" data-page="dashboard">▦ Dashboard</button>
+        <button data-page="analyze">⌕ Analyze Transaction</button>
+        <button data-page="history">◷ Transaction History</button>
+        <button data-page="model">◈ Model Information</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+        <strong>✓ System Active</strong>
+        <p>Transaction monitoring demo</p>
+    </div>
+
+</aside>
+
+<main class="main">
+
+    <header class="topbar">
+        <div>
+            <h3>Fraud Detection System Build By M.Adeeb Ali SoftweR Developer</h3>
+            <p>Intelligent transaction monitoring</p>
+        </div>
+
+        <div class="profile">
+            <div class="avatar">A</div>
+            <div>
+                <strong>Administrator</strong>
+                <small>System User</small>
+            </div>
+        </div>
+    </header>
+
+    <div class="content">
+
+        <div class="alert" id="alert"></div>
+
+        <!-- DASHBOARD -->
+
+        <section class="page active" id="dashboard">
+
+            <div class="welcome">
+                <div>
+                    <span class="eyebrow">OVERVIEW</span>
+                    <h1>Dashboard</h1>
+                    <p>Monitor transactions and analyze potential fraud activity.</p>
+                </div>
+
+                <button class="primary-btn" onclick="showPage('analyze')">
+                    + Analyze Transaction
+                </button>
+            </div>
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Total Transactions</span>
+                        <div class="stat-icon purple">▦</div>
+                    </div>
+                    <h2 id="totalCount">0</h2>
+                    <small>All recorded transactions</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Low Risk</span>
+                        <div class="stat-icon green">✓</div>
+                    </div>
+                    <h2 id="safeCount">0</h2>
+                    <small>Lower predicted risk</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Under Review</span>
+                        <div class="stat-icon orange">◷</div>
+                    </div>
+                    <h2 id="reviewCount">0</h2>
+                    <small>Requires further review</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>High Risk</span>
+                        <div class="stat-icon red">!</div>
+                    </div>
+                    <h2 id="fraudCount">0</h2>
+                    <small>High predicted risk</small>
+                </div>
+
+            </div>
+
+            <div class="card">
+
+                <div class="card-heading">
+                    <div>
+                        <h2>Recent Transactions</h2>
+                        <p>Latest analyzed transaction records</p>
+                    </div>
+
+                    <button class="text-btn" onclick="showPage('history')">
+                        View All →
+                    </button>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount</th>
+                                <th>Risk Probability</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-heading">
+                    <div>
+                        <h2>Transaction Risk Overview</h2>
+                        <p>Distribution of analyzed transactions</p>
+                    </div>
+                </div>
+
+                <div style="max-width:450px;margin:auto;height:260px;">
+                    <canvas id="riskChart"></canvas>
+                </div>
+            </div>
+
+            <div class="banner">
+                <div class="banner-icon">✦</div>
+                <div>
+                    <h3>Intelligent Fraud Monitoring</h3>
+                    <p>Analyze transaction features and estimate possible fraud risk using a demonstration scoring model.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ANALYZE -->
+
+        <section class="page" id="analyze">
+
+            <div class="welcome">
+                <div>
+                    <span class="eyebrow">TRANSACTION ANALYSIS</span>
+                    <h1>Analyze Transaction</h1>
+                    <p>Enter transaction information to estimate its risk.</p>
+                </div>
+            </div>
+
+            <div class="card">
+
+                <div class="card-heading">
+                    <div>
+                        <h2>Transaction Information</h2>
+                        <p>Complete all fields to analyze a transaction.</p>
+                    </div>
+                    <span class="eyebrow">AI DEMO</span>
+                </div>
+
+                <form id="transactionForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label>Transaction Amount (PKR)</label>
+                            <input type="number" name="amount" min="0.01" step="0.01" placeholder="Example: 25000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transaction Hour</label>
+                            <input type="number" name="hour" min="0" max="23" placeholder="0 - 23" required>
+                            <small>0 = Midnight, 23 = 11 PM</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Distance from Usual Location (KM)</label>
+                            <input type="number" name="distance" min="0" step="0.1" placeholder="Example: 15" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Transactions in Last Hour</label>
+                            <input type="number" name="velocity" min="0" placeholder="Example: 3" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Merchant Risk Level</label>
+                            <select name="merchant" required>
+                                <option value="">Select risk level</option>
+                                <option value="0.1">Low Risk</option>
+                                <option value="0.5">Medium Risk</option>
+                                <option value="0.9">High Risk</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>International Transaction</label>
+                            <select name="international" required>
+                                <option value="">Select option</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="reset" class="secondary-btn">Reset Form</button>
+                        <button type="submit" class="primary-btn">Analyze with AI →</button>
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="card result" id="result">
+
+                <div class="result-header">
+                    <div>
+                        <span class="eyebrow">ANALYSIS COMPLETE</span>
+                        <h2>Transaction Risk Report</h2>
+                    </div>
+                    <span class="status" id="resultStatus"></span>
+                </div>
+
+                <div class="result-grid">
+                    <div>
+                        <span>Transaction Amount</span>
+                        <h3 id="resultAmount"></h3>
+                    </div>
+
+                    <div>
+                        <span>Estimated Risk Probability</span>
+                        <h3 id="resultProbability"></h3>
+                    </div>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <p class="result-note" id="resultMessage"></p>
+
+            </div>
+
+        </section>
+
+        <!-- HISTORY -->
+
+        <section class="page" id="history">
+
+            <div class="welcome">
+                <div>
+                    <span class="eyebrow">RECORD MANAGEMENT</span>
+                    <h1>Transaction History</h1>
+                    <p>Review all previously analyzed transactions.</p>
+                </div>
+
+                <button class="danger-btn" onclick="clearHistory()">
+                    Clear History
+                </button>
+            </div>
+
+            <div class="card">
+
+                <div class="card-heading">
+                    <div>
+                        <h2>All Transactions</h2>
+                        <p>Records stored in your browser.</p>
+                    </div>
+
+                    <input
+                        class="search-input"
+                        id="searchInput"
+                        placeholder="Search transactions..."
+                    >
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount</th>
+                                <th>Hour</th>
+                                <th>Distance</th>
+                                <th>Velocity</th>
+                                <th>Probability</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="historyTable"></tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- MODEL -->
+
+        <section class="page" id="model">
+
+            <div class="welcome">
+                <div>
+                    <span class="eyebrow">MODEL INFORMATION</span>
+                    <h1>Model Information</h1>
+                    <p>Learn how the demonstration risk scoring system works.</p>
+                </div>
+            </div>
+
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Scoring Engine</span>
+                        <div class="stat-icon purple">◈</div>
+                    </div>
+                    <h2 style="font-size:19px;">JavaScript</h2>
+                    <small>Rule-based educational demo</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Risk Categories</span>
+                        <div class="stat-icon green">✓</div>
+                    </div>
+                    <h2>03</h2>
+                    <small>Low, Review and High</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Storage</span>
+                        <div class="stat-icon orange">▦</div>
+                    </div>
+                    <h2 style="font-size:19px;">LocalStorage</h2>
+                    <small>Browser-based storage</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Interface</span>
+                        <div class="stat-icon red">✦</div>
+                    </div>
+                    <h2 style="font-size:19px;">Responsive</h2>
+                    <small>Desktop and mobile</small>
+                </div>
+
+            </div>
+
+            <div class="card">
+                <div class="card-heading">
+                    <div>
+                        <h2>Risk Analysis Features</h2>
+                        <p>Transaction attributes used by the scoring demonstration.</p>
+                    </div>
+                </div>
+
+                <div class="model-grid">
+
+                    <div class="model-box">
+                        <h3>Transaction Amount</h3>
+                        <p>Higher amounts can increase the demonstration risk score.</p>
+                    </div>
+
+                    <div class="model-box">
+                        <h3>Transaction Time</h3>
+                        <p>Transactions during unusual hours can increase the score.</p>
+                    </div>
+
+                    <div class="model-box">
+                        <h3>Location Distance</h3>
+                        <p>Large distance from the usual location can be a risk signal.</p>
+                    </div>
+
+                    <div class="model-box">
+                        <h3>Transaction Velocity</h3>
+                        <p>Many transactions within a short period can increase risk.</p>
+                    </div>
+
+                    <div class="model-box">
+                        <h3>Merchant Risk</h3>
+                        <p>The selected merchant risk level contributes to the score.</p>
+                    </div>
+
+                    <div class="model-box">
+                        <h3>International Activity</h3>
+                        <p>International transaction status is another scoring feature.</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="banner">
+                <div class="banner-icon">!</div>
+                <div>
+                    <h3>Educational Demonstration Only</h3>
+                    <p>This single-file version does not use a trained Random Forest model or real banking data. It is not suitable for real payment decisions.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <footer>
+        ShieldAI © 2026 · Credit Card Fraud Detection Demo Build By M.Adeeb Ali SoftweR Developer
+    </footer>
+
+</main>
+
+</div>
+
+<script>
+
+let transactions = [];
+
+try {
+    transactions = JSON.parse(localStorage.getItem("shieldAI_transactions")) || [];
+} catch {
+    transactions = [];
+}
+
+let chart = null;
+
+function saveTransactions() {
+    localStorage.setItem("shieldAI_transactions", JSON.stringify(transactions));
+}
+
+function showPage(pageId) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(button => {
+        button.classList.toggle("active", button.dataset.page === pageId);
+    });
+
+    if (pageId === "dashboard") {
+        updateDashboard();
+    }
+
+    if (pageId === "history") {
+        renderHistory();
+    }
+
+    window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+document.querySelectorAll(".nav button").forEach(button => {
+    button.addEventListener("click", () => {
+        showPage(button.dataset.page);
+    });
+});
+
+function calculateRisk(data) {
+
+    let score = 0;
+
+    if (data.amount > 50000) score += 20;
+    else if (data.amount > 25000) score += 10;
+
+    if (data.hour <= 5) score += 20;
+
+    if (data.distance > 100) score += 20;
+    else if (data.distance > 50) score += 10;
+
+    if (data.velocity > 8) score += 20;
+    else if (data.velocity > 5) score += 10;
+
+    score += data.merchant * 20;
+
+    if (data.international === 1) score += 15;
+
+    return Math.min(Math.round(score), 100);
+}
+
+function getStatus(probability) {
+
+    if (probability >= 65) {
+        return "High Risk";
+    }
+
+    if (probability >= 35) {
+        return "Under Review";
+    }
+
+    return "Low Risk";
+}
+
+function getStatusClass(status) {
+    return status.toLowerCase().replaceAll(" ", "-");
+}
+
+function formatAmount(amount) {
+    return "Rs. " + Number(amount).toLocaleString("en-PK", {
+        maximumFractionDigits: 2
+    });
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[char]);
+}
+
+document.getElementById("transactionForm").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const form = new FormData(this);
+
+    const data = {
+        amount: Number(form.get("amount")),
+        hour: Number(form.get("hour")),
+        distance: Number(form.get("distance")),
+        velocity: Number(form.get("velocity")),
+        merchant: Number(form.get("merchant")),
+        international: Number(form.get("international"))
+    };
+
+    if (
+        !Number.isFinite(data.amount) ||
+        data.amount <= 0 ||
+        !Number.isInteger(data.hour) ||
+        data.hour < 0 ||
+        data.hour > 23 ||
+        !Number.isFinite(data.distance) ||
+        data.distance < 0 ||
+        !Number.isInteger(data.velocity) ||
+        data.velocity < 0 ||
+        ![0.1, 0.5, 0.9].includes(data.merchant) ||
+        ![0, 1].includes(data.international)
+    ) {
+        showAlert("Please enter valid transaction details.", "error");
+        return;
+    }
+
+    const probability = calculateRisk(data);
+    const status = getStatus(probability);
+
+    const transaction = {
+        id: Date.now(),
+        ...data,
+        probability,
+        status,
+        date: new Date().toLocaleString()
+    };
+
+    transactions.unshift(transaction);
+
+    saveTransactions();
+
+    showResult(transaction);
+
+    updateDashboard();
+});
+
+function showResult(transaction) {
+
+    const result = document.getElementById("result");
+
+    result.classList.add("show");
+
+    const status = document.getElementById("resultStatus");
+
+    status.textContent = transaction.status;
+    status.className = "status " + getStatusClass(transaction.status);
+
+    document.getElementById("resultAmount").textContent =
+        formatAmount(transaction.amount);
+
+    document.getElementById("resultProbability").textContent =
+        transaction.probability + "%";
+
+    document.getElementById("resultMessage").textContent =
+        "Estimated risk category: " + transaction.status +
+        ". This is an educational scoring result, not a verified fraud decision.";
+
+    document.getElementById("progressFill").style.width =
+        transaction.probability + "%";
+
+    result.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
+
+function updateDashboard() {
+
+    const total = transactions.length;
+
+    const safe = transactions.filter(t => t.status === "Low Risk").length;
+
+    const review = transactions.filter(t => t.status === "Under Review").length;
+
+    const fraud = transactions.filter(t => t.status === "High Risk").length;
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("safeCount").textContent = safe;
+    document.getElementById("reviewCount").textContent = review;
+    document.getElementById("fraudCount").textContent = fraud;
+
+    renderRecent();
+    updateChart(safe, review, fraud);
+}
+
+function renderRecent() {
+
+    const tbody = document.getElementById("recentTable");
+
+    const recent = transactions.slice(0, 5);
+
+    if (!recent.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    No transactions found. Analyze your first transaction.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = recent.map(t => `
+        <tr>
+            <td>#${t.id.toString().slice(-6)}</td>
+            <td>${formatAmount(t.amount)}</td>
+            <td>${t.probability}%</td>
+            <td>
+                <span class="status ${getStatusClass(t.status)}">
+                    ${escapeHTML(t.status)}
+                </span>
+            </td>
+            <td>${escapeHTML(t.date)}</td>
+        </tr>
+    `).join("");
+}
+
+function renderHistory(search = "") {
+
+    const tbody = document.getElementById("historyTable");
+
+    const filtered = transactions.filter(t => {
+        const value = [
+            t.id,
+            t.amount,
+            t.status,
+            t.date
+        ].join(" ").toLowerCase();
+
+        return value.includes(search.toLowerCase());
+    });
+
+    if (!filtered.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty">
+                    No matching transactions found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map(t => `
+        <tr>
+            <td>#${t.id.toString().slice(-6)}</td>
+            <td>${formatAmount(t.amount)}</td>
+            <td>${t.hour}:00</td>
+            <td>${t.distance} KM</td>
+            <td>${t.velocity}</td>
+            <td>${t.probability}%</td>
+            <td>
+                <span class="status ${getStatusClass(t.status)}">
+                    ${escapeHTML(t.status)}
+                </span>
+            </td>
+            <td>${escapeHTML(t.date)}</td>
+        </tr>
+    `).join("");
+}
+
+document.getElementById("searchInput").addEventListener("input", function() {
+    renderHistory(this.value);
+});
+
+function clearHistory() {
+
+    if (!transactions.length) {
+        showAlert("There are no transactions to delete.", "error");
+        return;
+    }
+
+    if (confirm("Are you sure you want to delete all transactions?")) {
+        transactions = [];
+
+        saveTransactions();
+
+        renderHistory();
+        updateDashboard();
+
+        showAlert("Transaction history cleared successfully.", "success");
+    }
+}
+
+function updateChart(safe, review, fraud) {
+
+    const canvas = document.getElementById("riskChart");
+
+    if (chart) {
+        chart.destroy();
+    }
+
+    chart = new Chart(canvas, {
+        type: "doughnut",
+
+        data: {
+            labels: ["Low Risk", "Under Review", "High Risk"],
+
+            datasets: [{
+                data: [safe, review, fraud],
+                backgroundColor: ["#16a477", "#dc962f", "#e34e68"],
+                borderWidth: 0,
+                hoverOffset: 7
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: "bottom",
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: {
+                            family: "DM Sans"
+                        }
+                    }
+                }
+            },
+
+            cutout: "70%"
+        }
+    });
+}
+
+function showAlert(message, type) {
+
+    const alert = document.getElementById("alert");
+
+    alert.textContent = message;
+    alert.className = "alert " + type + " show";
+
+    setTimeout(() => {
+        alert.classList.remove("show");
+    }, 3500);
+}
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
